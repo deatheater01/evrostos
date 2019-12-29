@@ -23,5 +23,5 @@ This is an inspiration from https://medium.com/@danielabloom/covert-channels-dem
 `base_node.py -h`
 `remote_node.py -h`
 
-Note both the files must be run with admin privileges.
+Note : Both the files must be run with admin privileges.
 
