@@ -110,7 +110,7 @@ def main():
 
     parser.add_argument(
         "output_file",
-        help="File to which to write the exfiltrated data"
+        help="File to which to write the received data"
     )
 
     args = parser.parse_args()
