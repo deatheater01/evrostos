@@ -45,7 +45,7 @@ class Receiver:
 
         return final_data
 
-    def process_data_packet(self, pkt):
+    def data_packet_process(self, pkt):
         payload = pkt[Raw].load.decode()
         if not self.transmission_in_progress:
             self.last_display_time = time.time()
@@ -67,7 +67,7 @@ class Receiver:
             print(f"[-] {percent_completed}% completed ({self.bits_read}/{self.bits_to_receive} bits)", file=sys.stderr)
             self.last_display_time = time.time()
 
-    def process_end_packet(self, pkt):
+    def process_terminate_packet(self, pkt):
         if len(self.raw_bits) + 1 < self.largest_seq_num:
             print("[!] Error: some packets were dropped during transmission", file=sys.stderr)
             exit(1)
@@ -81,17 +81,17 @@ class Receiver:
         time_elapsed = round(time.time() - self.start_time, 2)
         print(f"[+] Transferred {num_bytes_transferred} bytes in {time_elapsed} seconds", file=sys.stderr)
 
-    def is_end_packet(self, pkt):
+    def is_finale_packet(self, pkt):
         return pkt.haslayer(Raw) and pkt[Raw].load.decode() == self.END_VALUE
 
     def process_packet(self, pkt):
         if pkt.haslayer(Raw) and pkt[Raw].load.decode().startswith(self.MAGIC_VALUE):
-            self.process_data_packet(pkt)
+            self.data_packet_process(pkt)
             return
 
         
-        elif self.is_end_packet(pkt):
-            self.process_end_packet(pkt)
+        elif self.is_finale_packet(pkt):
+            self.process_terminate_packet(pkt)
             return
 
     def receive(self,):
@@ -99,7 +99,7 @@ class Receiver:
         sniff(
             filter="ip6 and not icmp6",
             prn=self.process_packet,
-            stop_filter=self.is_end_packet,
+            stop_filter=self.is_finale_packet,
             store=0
         )
         return self.data
