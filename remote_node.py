@@ -77,12 +77,12 @@ def main():
 
     parser.add_argument(
         "input_file",
-        help="File to exfiltrate"
+        help="File to send secretly"
     )
 
     parser.add_argument(
         "destination",
-        help="IPv6 address where to exfiltrate data"
+        help="IPv6 address where to send data"
     )
 
     parser.add_argument(
@@ -91,14 +91,14 @@ def main():
         type=float,
         default=10,
         required=False,
-        help='Number of milliseconds to wait between each IPv6 packet to send',
+        help='Time to wait between each IPv6 packet to send',
         
     )
 
     args = parser.parse_args()
     sender = Sender(args.input_file, args.destination, args.sending_interval)
     sender.send()
-    print("\ndone", file=sys.stderr)
+    print("\nmission executed", file=sys.stderr)
 
 
 if __name__ == "__main__":
@@ -109,6 +109,5 @@ if __name__ == "__main__":
 ██╔══╝░░░╚████╔╝░██╔══██╗██║░░██║░╚═══██╗░░░██║░░░██║░░██║░╚═══██╗
 ███████╗░░╚██╔╝░░██║░░██║╚█████╔╝██████╔╝░░░██║░░░╚█████╔╝██████╔╝
 ╚══════╝░░░╚═╝░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░╚═╝░░░░╚════╝░╚═════╝░
-
     -deatheater01""")
     main()
